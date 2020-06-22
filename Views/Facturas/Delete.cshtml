@@ -1,0 +1,47 @@
+﻿@model FacturaProyectMVC.Models.Pago
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Borrar pago</h2>
+
+<h3>¿Desea borrar este pago?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+
+        <dt>
+            En la factura:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Factura1.Nombre)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Cancelar", "Index")
+        </div>
+    }
+</div>

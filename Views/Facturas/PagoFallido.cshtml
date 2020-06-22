@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "PagoFallido";
+    var maximo = ViewBag.Pagomaximo;
+    var recibido = ViewBag.PagoRecibido;
+}
+
+<h2>Pago no realizado</h2>
+<div>
+    No ha sido posible realizar el pago debido a que usted intento pagar: $@Html.Encode(recibido) <br />
+    La cantidad esperada es de mas de $1 a $@Html.Encode(maximo)
+</div>
+
+<div>
+    @Html.ActionLink("Volver a la lista de facturas", "Index")
+</div>
+
+
+

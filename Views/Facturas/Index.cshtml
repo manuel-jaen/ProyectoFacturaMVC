@@ -1,0 +1,61 @@
+﻿@model IEnumerable<FacturaProyectMVC.Models.Factura>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @using (Html.BeginForm())
+    {
+    <p>
+        Número @Html.TextBox("BuscarNombre")
+        <input type="submit" value="Buscar"/>
+    </p>
+    }
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaldoPago)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaldoPendiente)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SaldoPago)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SaldoPendiente)
+        </td>
+        <td>
+            @Html.ActionLink("Detalles", "Details", new { id = item.Id }) |
+            <input type="button" value="PAGAR" onclick="location.href='@Url.Action("RealizarPago", "Facturas", new { id=item.Id })'" />
+        </td>
+    </tr>
+}
+
+</table>

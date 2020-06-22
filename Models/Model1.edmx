@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FacturacionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Articulos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Factura" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="37" Scale="4" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Facturas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SaldoPago" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SaldoPendiente" Type="decimal" Precision="19" Scale="2" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Pagos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Valor" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Factura" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ARTICULO_FACTURA">
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
+          <End Role="Articulos" Type="Self.Articulos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facturas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Articulos">
+              <PropertyRef Name="Factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pagos_Factura">
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
+          <End Role="Pagos" Type="Self.Pagos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facturas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pagos">
+              <PropertyRef Name="Factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FacturacionModelStoreContainer">
+          <EntitySet Name="Articulos" EntityType="Self.Articulos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Facturas" EntityType="Self.Facturas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pagos" EntityType="Self.Pagos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ARTICULO_FACTURA" Association="Self.FK_ARTICULO_FACTURA">
+            <End Role="Facturas" EntitySet="Facturas" />
+            <End Role="Articulos" EntitySet="Articulos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pagos_Factura" Association="Self.FK_Pagos_Factura">
+            <End Role="Facturas" EntitySet="Facturas" />
+            <End Role="Pagos" EntitySet="Pagos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FacturacionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Articulo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Factura" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="37" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Factura1" Relationship="Self.FK_ARTICULO_FACTURA" FromRole="Articulos" ToRole="Facturas" />
+        </EntityType>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SaldoPago" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SaldoPendiente" Type="Decimal" Precision="19" Scale="2" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Articulos" Relationship="Self.FK_ARTICULO_FACTURA" FromRole="Facturas" ToRole="Articulos" />
+          <NavigationProperty Name="Pagos" Relationship="Self.FK_Pagos_Factura" FromRole="Facturas" ToRole="Pagos" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Valor" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Factura" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Factura1" Relationship="Self.FK_Pagos_Factura" FromRole="Pagos" ToRole="Facturas" />
+        </EntityType>
+        <Association Name="FK_ARTICULO_FACTURA">
+          <End Role="Facturas" Type="Self.Factura" Multiplicity="1" />
+          <End Role="Articulos" Type="Self.Articulo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facturas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Articulos">
+              <PropertyRef Name="Factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pagos_Factura">
+          <End Role="Facturas" Type="Self.Factura" Multiplicity="1" />
+          <End Role="Pagos" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facturas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pagos">
+              <PropertyRef Name="Factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FacturacionEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Articulos" EntityType="Self.Articulo" />
+          <EntitySet Name="Facturas" EntityType="Self.Factura" />
+          <EntitySet Name="Pagos" EntityType="Self.Pago" />
+          <AssociationSet Name="FK_ARTICULO_FACTURA" Association="Self.FK_ARTICULO_FACTURA">
+            <End Role="Facturas" EntitySet="Facturas" />
+            <End Role="Articulos" EntitySet="Articulos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pagos_Factura" Association="Self.FK_Pagos_Factura">
+            <End Role="Facturas" EntitySet="Facturas" />
+            <End Role="Pagos" EntitySet="Pagos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FacturacionModelStoreContainer" CdmEntityContainer="FacturacionEntities1">
+          <EntitySetMapping Name="Articulos">
+            <EntityTypeMapping TypeName="FacturacionModel.Articulo">
+              <MappingFragment StoreEntitySet="Articulos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Factura" ColumnName="Factura" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facturas">
+            <EntityTypeMapping TypeName="FacturacionModel.Factura">
+              <MappingFragment StoreEntitySet="Facturas">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="SaldoPago" ColumnName="SaldoPago" />
+                <ScalarProperty Name="SaldoPendiente" ColumnName="SaldoPendiente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pagos">
+            <EntityTypeMapping TypeName="FacturacionModel.Pago">
+              <MappingFragment StoreEntitySet="Pagos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Factura" ColumnName="Factura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,110 @@
+﻿@model FacturaProyectMVC.Models.Factura
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Factura</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SaldoPago)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SaldoPago)
+        </dd>
+
+    </dl>
+
+    @*Logica para ver la tabla de pagos realizados*@
+    <table class="table">
+
+        <tr>
+
+            <th>Fecha</th>
+
+            <th>Valor</th>
+
+            <th>Modificar</th>
+
+        </tr>
+
+        @*Checar si hay algun Pago*@
+        @if (Model.Pagos.Count == 0)
+        {
+            <tr>
+                <td colspan="3">
+                    NO HAY PAGOS RECIBIDOS
+                </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model.Pagos)
+            {
+                <tr>
+
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.Fecha)
+
+                    </td>
+
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.Valor)
+
+                    </td>
+                    <td>
+                        @Html.ActionLink("Borrar", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+
+
+            }
+        }
+    </table>
+</div>
+
+@*ver el saldo pendiente de la factura*@
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.SaldoPendiente)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.SaldoPendiente)
+    </dd>
+    
+</dl>
+
+<p>
+    @Html.ActionLink("Volver a la lista de facturas", "Index")
+</p>
